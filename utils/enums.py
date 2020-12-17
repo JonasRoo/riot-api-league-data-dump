@@ -37,10 +37,10 @@ class Tier(enum.Enum):
     Represents a (`GET leagueEntries`-queryable!) competitive tier a player can be in.
     Challenger, Grandmaster and Masters need to be fetched from a separate endpoint!
     """
-
-    # CHALLENGER = "CHALLENGER"
-    # GRANDMASTER = "GRANDMASTER"
-    # MASTER = "MASTER"
+    # NOTE(jonas): Challenger, Grandmaster, Master cannot be fetched from the `leagueEntries` endpoint!
+    CHALLENGER = "CHALLENGER"
+    GRANDMASTER = "GRANDMASTER"
+    MASTER = "MASTER"
     DIAMOND = "DIAMOND"
     PLATINUM = "PLATINUM"
     GOLD = "GOLD"
