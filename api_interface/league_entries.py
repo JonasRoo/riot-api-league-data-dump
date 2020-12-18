@@ -82,11 +82,11 @@ class EntryFetcher:
         return data
 
 
-_TESTING_PURPOSES_EF = EntryFetcher(
-    lolwatcher=LolWatcher(os.environ.get("X_RIOT_TOKEN")),
-    tier=Tier.GOLD,
-    division=Division.FOUR,
-    ranked_queue=RankedQueue.SOLO_DUO,
-    server=Server.EUW,
-    max_entries=50,
-)
+_TESTING_PURPOSES_EF_PARAMS = {
+    "lolwatcher": LolWatcher(os.environ.get("X_RIOT_TOKEN")),
+    "tier": Tier.GOLD,
+    "division": Division.FOUR,
+    "ranked_queue": RankedQueue.SOLO_DUO,
+    "server": Server.EUW,
+    "max_entries": 50,
+}

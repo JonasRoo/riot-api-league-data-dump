@@ -1,5 +1,5 @@
 from typing import Mapping, Any, Tuple
-from sqlalchemy import Column, String, Enum, Integer, Boolean, ForeignKey
+from sqlalchemy import Column, String, Enum, Integer, Boolean, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship, class_mapper
 from .. import bot_declarative_base
 from utils.enums import Tier, Division, RankedQueue, Server
@@ -36,6 +36,12 @@ class Player(bot_declarative_base):
     is_hot_streak = Column(Boolean)
     mini_series_id = Column(Integer, ForeignKey("miniseries.id", ondelete="cascade"), nullable=True)
     mini_series = relationship("MiniSeries", backref="player")
+
+    __table_args__ = (
+        UniqueConstraint(
+            "server", "summoner_id", "ranked_queue", name="_one_entry_per_server_queue_uc"
+        ),
+    )
 
     @classmethod
     def _api_model_map(cls) -> Mapping[str, str]:
