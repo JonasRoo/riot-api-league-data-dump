@@ -34,10 +34,11 @@ class SessionCreator:
         """
         # create DB engine
         # connection string abstraced into environment to make DB agnostic
-        # LOL_WATCHBOT_DB_CONNECTION_STRING="sqlite:////home/jonas/discord-lol-watchbot/watchbot.db"
         _db_string = os.environ.get(_CONN_STRING_ENV_NAME)
         if not _db_string:
-            raise AttributeError(f"You need to define a valid DB connection string under env variable `{_CONN_STRING_ENV_NAME}`")
+            raise AttributeError(
+                f"You need to define a valid DB connection string under env variable `{_CONN_STRING_ENV_NAME}`"
+            )
         engine = create_engine(_db_string)
 
         # create all required tables from the "tables" module
