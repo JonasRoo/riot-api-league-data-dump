@@ -1,4 +1,5 @@
 from typing import List, Dict, Any, Optional
+import os
 from riotwatcher import LolWatcher
 from utils.enums import Tier, Division, RankedQueue, Server
 
@@ -79,3 +80,13 @@ class EntryFetcher:
         self.current_page += 1
 
         return data
+
+
+_TESTING_PURPOSES_EF = EntryFetcher(
+    lolwatcher=LolWatcher(os.environ.get("X_RIOT_TOKEN")),
+    tier=Tier.GOLD,
+    division=Division.FOUR,
+    ranked_queue=RankedQueue.SOLO_DUO,
+    server=Server.EUW,
+    max_entries=50,
+)
