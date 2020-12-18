@@ -16,6 +16,6 @@ The output medium (e.g. `csv`, `database`) can be selected.
 # Prerequisites
 - A **working** Riot API key
 - defined environment variables:
-    > `X_RIOT_TOKEN`: your valid Riot Games API token.
+    > `X_RIOT_TOKEN`: your valid Riot Games API token.<br>
     > `RIOT_DATA_DUMP_DB_CONNECTION_STRING`: a valid SQLAlchemy databse connection string.
  
