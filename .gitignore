@@ -140,5 +140,6 @@ cython_debug/
 .vscode
 
 # databases, data
-data/
+raw_data/
+*.csv
 *.db

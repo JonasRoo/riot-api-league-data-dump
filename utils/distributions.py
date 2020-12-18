@@ -1,5 +1,5 @@
 from typing import Iterable, Mapping
-from .enums import Tier, Division
+from enums import Tier, Division
 
 
 class _RankedDistribution:
@@ -11,10 +11,14 @@ class _RankedDistribution:
         division_distributions (Mapping[Division, float]): A mapping of {division: %age of playerbase in this division}
     """
 
-    def __init__(self, tier: Tier, division_distributions: Mapping[Division, float]) -> None:
+    def __init__(self, tier: Tier, division_distribution: Mapping[Division, float]) -> None:
         self.tier = tier
-        self.distribution = division_distributions
-        self.total = sum(division_distributions.values())
+        self.distribution = division_distribution
+        self.total = sum(division_distribution.values())
+
+    def __str__(self) -> str:
+        distributions = [f"{div.value}: {perc:.2%}" for div, perc in self.distribution.items()]
+        return f"{self.tier.value} ({self.total:.2%}): {{{' | '.join(distributions)}}}"
 
 
 # V------------ STATIC DISTRIBUTIONS ------------V
@@ -50,7 +54,7 @@ Gold = _RankedDistribution(
     },
 )
 
-Silver = RankedDistribution(
+Silver = _RankedDistribution(
     tier=Tier.SILVER,
     division_distribution={
         Division.ONE: 0.059,
@@ -60,7 +64,7 @@ Silver = RankedDistribution(
     },
 )
 
-Bronze = RankedDistribution(
+Bronze = _RankedDistribution(
     tier=Tier.BRONZE,
     division_distribution={
         Division.ONE: 0.070,
@@ -70,7 +74,7 @@ Bronze = RankedDistribution(
     },
 )
 
-Iron = RankedDistribution(
+Iron = _RankedDistribution(
     tier=Tier.IRON,
     division_distribution={
         Division.ONE: 0.0160,
@@ -89,3 +93,7 @@ TotalDistribution = (
     Platinum,
     Diamond,
 )
+
+if __name__ == "__main__":
+    for d in TotalDistribution:
+        print(d)
