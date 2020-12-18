@@ -7,6 +7,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 # Declarative base that is being used by all our DB interfaces
 _CONN_STRING_ENV_NAME = "RIOT_DATA_DUMP_DB_CONNECTION_STRING"
+_TEST_ENV_NAME = "RIOT_DB_TEST_ENV"
+
 bot_declarative_base = declarative_base()
 
 
@@ -34,7 +36,9 @@ class SessionCreator:
         """
         # create DB engine
         # connection string abstraced into environment to make DB agnostic
-        _db_string = os.environ.get(_CONN_STRING_ENV_NAME)
+        _db_string = (
+            "sqlite://" if os.environ.get(_TEST_ENV_NAME) else os.environ.get(_CONN_STRING_ENV_NAME)
+        )
         if not _db_string:
             raise AttributeError(
                 f"You need to define a valid DB connection string under env variable `{_CONN_STRING_ENV_NAME}`"
