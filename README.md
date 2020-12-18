@@ -18,4 +18,6 @@ The output medium (e.g. `csv`, `database`) can be selected.
 - defined environment variables:
     > `X_RIOT_TOKEN`: your valid Riot Games API token.<br>
     > `RIOT_DATA_DUMP_DB_CONNECTION_STRING`: a valid SQLAlchemy databse connection string.
- 
+
+# Testing
+Run `nosetests -v`
