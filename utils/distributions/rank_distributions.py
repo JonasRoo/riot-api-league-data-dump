@@ -1,5 +1,5 @@
 from typing import Iterable, Mapping
-from enums import Tier, Division
+from utils.enums import Tier, Division
 
 
 class _RankedDistribution:
@@ -21,8 +21,10 @@ class _RankedDistribution:
         return f"{self.tier.value} ({self.total:.2%}): {{{' | '.join(distributions)}}}"
 
 
-# V------------ STATIC DISTRIBUTIONS ------------V
+# =V------------ STATIC DISTRIBUTIONS ------------V
 # source: https://www.leagueofgraphs.com/rankings/rank-distribution (as of 12/17/20)
+# Q: why static distributions?
+# A: %age distributions across servers is (mostly) neglilible in the non-challenger-esque leagues.
 
 Diamond = _RankedDistribution(
     tier=Tier.DIAMOND,
