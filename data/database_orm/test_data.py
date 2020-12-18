@@ -10,7 +10,7 @@ def _after_db_tests():
     os.unsetenv("RIOT_DB_TEST_ENV")
 
 
-@with_setup(_setup_in_memory_db, _after_db_tests)
+@with_setup(setup=_setup_in_memory_db, teardown=_after_db_tests)
 def test_database_cache():
     from ..data_caches import DatabaseCache
     from ..database_orm.tables.player import Player
