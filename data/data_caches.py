@@ -26,6 +26,7 @@ class BaseDataCache:
 
     def chunk_internally_and_is_fullsized(self) -> Generator[bool, None, None]:
         # NOTE(jonas): we have redundance in here (albeit small) memory complexity is raised by `O(batch_size)`
+        # this could maybe be implemented as a custom queue
         _total_data = self.data
         for i in range(0, len(_total_data), self.batch_size):
             self.data = _total_data[i : i + self.batch_size]
