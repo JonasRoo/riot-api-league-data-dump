@@ -10,5 +10,6 @@ def test_correct_fetching():
 
     ef = EntryFetcher(**_TESTING_PURPOSES_EF_PARAMS)
     for idx, data in enumerate(ef):
-        assert idx < 1
         assert data is not None
+
+    assert idx < 1
