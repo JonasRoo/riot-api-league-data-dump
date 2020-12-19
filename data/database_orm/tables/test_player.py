@@ -1,5 +1,7 @@
 def test_player_from_api_response():
     """
+    Test data fetching and instantiating Player from API response.
+
     Tests whether
         > data can be fetched successfully from the Riot API `GET getLeagueEntries` endpoint,
         > a `Player` object can be successfully converted from this raw API response.

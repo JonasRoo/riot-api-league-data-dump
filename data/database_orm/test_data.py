@@ -20,7 +20,7 @@ def _after_db_tests():
 @with_setup(setup=_setup_in_memory_db, teardown=_after_db_tests)
 def test_database_cache():
     """
-    Tests the database cache by using a mock in-memory sqlite database.
+    Test the database cache by using a mock in-memory sqlite database.
     Temporarily enters TEST-mode for the application, but always exits it after.
     """
     from ..data_caches import DatabaseCache

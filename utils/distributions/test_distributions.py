@@ -1,4 +1,7 @@
 def test_ranked_distribution():
+    """
+    Test ranked distributions for correctness and sum.
+    """
     from .rank_distributions import TotalDistribution as TotalRankedDistribution
 
     assert TotalRankedDistribution is not None
@@ -6,6 +9,9 @@ def test_ranked_distribution():
 
 
 def test_server_distribution():
+    """
+    Test server distributions for all Server enum members.
+    """
     from .server_distributions import TotalDistribution as TotalServerDistribution
     from ..enums import Server
 

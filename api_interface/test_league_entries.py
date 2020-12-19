@@ -1,6 +1,6 @@
 def test_correct_fetching():
     """
-    Tests that the `EntryFetcher` class fetches correct results.
+    Test EntryFetcher class fetching.
     """
     import os
     from .league_entries import EntryFetcher, _TESTING_PURPOSES_EF_PARAMS
