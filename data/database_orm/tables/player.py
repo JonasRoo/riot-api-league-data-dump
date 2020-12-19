@@ -15,6 +15,10 @@ _ENUM_FIELDS = [
 
 
 class Player(bot_declarative_base):
+    """
+    A player represents a member of a RankedQueue with given ranked information.
+    """
+
     __tablename__ = "players"
 
     id = Column(Integer, primary_key=True)
@@ -37,6 +41,7 @@ class Player(bot_declarative_base):
     mini_series_id = Column(Integer, ForeignKey("miniseries.id", ondelete="cascade"), nullable=True)
     mini_series = relationship("MiniSeries", backref="player")
 
+    # There can only be one entry for a summoner on a server in a given queue
     __table_args__ = (
         UniqueConstraint(
             "server", "summoner_id", "ranked_queue", name="_one_entry_per_server_queue_uc"
@@ -45,6 +50,16 @@ class Player(bot_declarative_base):
 
     @classmethod
     def _api_model_map(cls) -> Mapping[str, str]:
+        """
+        Produces an internal mapping of named fields from the API response to named fields of this table.
+        Format:
+            {
+                "key_in_api_response_body": "table_field_name"
+            }
+
+        Returns:
+            Mapping[str, str]: mapping of API response fields to table fields.
+        """
         return {
             "leagueId": "league_id",
             "summonerId": "summoner_id",
@@ -58,6 +73,13 @@ class Player(bot_declarative_base):
 
     @classmethod
     def _from_api_dict(cls, league_entry_DTO: Mapping[str, Any]) -> "Player":
+        """
+        Instantiates a `Player` object from a list-member(!)
+        of the raw response of the Riot API `GET getLeagueEntries` endpoint.
+
+        Returns:
+            Player: The generated `Player` instance.
+        """
         new_instance = {}
         mapper = cls._api_model_map()
         for k, v in mapper.items():
@@ -69,10 +91,16 @@ class Player(bot_declarative_base):
 
 
 class MiniSeries(bot_declarative_base):
+    """
+    A miniseries represents a promotional series within a ranked queue.
+    """
+
     __tablename__ = "miniseries"
 
     id = Column(Integer, primary_key=True)
     target = Column(Integer)
     wins = Column(Integer)
     losses = Column(Integer)
+    # looks like this "xo-", "xxo--"
+    # 2 possible lengths: a) 5 - between divisions, b) 3 - between tiers within a division
     progress = Column(String(5))

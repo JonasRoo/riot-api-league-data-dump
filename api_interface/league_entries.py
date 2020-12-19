@@ -82,6 +82,7 @@ class EntryFetcher:
         return data
 
 
+# example instance of EntryFetcher (for testing purposes only!)
 _TESTING_PURPOSES_EF_PARAMS = {
     "lolwatcher": LolWatcher(os.environ.get("X_RIOT_TOKEN")),
     "tier": Tier.GOLD,
