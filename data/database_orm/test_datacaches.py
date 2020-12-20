@@ -30,6 +30,10 @@ def test_database_cache():
     from riotwatcher import LolWatcher
     import math
 
+    # delete all previous models for this test
+    with session_scope() as session:
+        session.query(Player).delete()
+
     with DatabaseCache(TableInstance=Player, batch_size=16) as cache:
         # slighty interference with another test here (`EntryFetcher` test), but should be fine
         ef = EntryFetcher(**_TESTING_PURPOSES_EF_PARAMS)
@@ -37,6 +41,7 @@ def test_database_cache():
             cache.add(entries)
     # check that the cache was saved and flushed in correct amount of batches
     assert cache.current_batch_no == math.ceil(ef.max_entries / cache.batch_size)
+    assert cache.empty
 
     with session_scope() as session:
         players = session.query(Player).distinct(Player.summoner_id).all()
