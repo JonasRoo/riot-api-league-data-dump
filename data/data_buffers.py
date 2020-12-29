@@ -3,21 +3,21 @@ from .database_orm import bot_declarative_base
 from .database_orm.session.session_handler import session_scope
 
 
-class BaseDataCache:
+class BaseDataBuffer:
     """
-    A context manager for database caches to implement, to sequentially store and save data to any data interface.
+    A context manager for database buffers to implement, to sequentially store and save data to any data interface.
     Provides basic functionality of 'caching' blocks of data (as Lists) as they come in.
-    Data is then saved (optionally in chunks) as it is added to the cache.
+    Data is then saved (optionally in chunks) as it is added to the buffer.
     Subclasses need to implement the `save()` method! (interface to the data saving medium).
 
     Args:
         batch_size (Optional[int], optional): If provided, data is saved in chunks of size [batch_size]. Defaults to 0.
-            > if set to 0 data is wholly saved whenever it's added to the cache.
+            > if set to 0 data is wholly saved whenever it's added to the buffer.
     """
 
     def __init__(self, batch_size: Optional[int] = 0) -> None:
         """
-        The 'cache' itself is the `data` field of the class.
+        The 'buffer' itself is the `data` field of the class.
         """
         self.batch_size = batch_size
         self.current_batch_no = 0
@@ -29,7 +29,7 @@ class BaseDataCache:
 
     def add(self, new_data: List[Mapping[str, Any]]) -> None:
         """
-        Interface to add new data to the cache.
+        Interface to add new data to the buffer.
 
         Args:
             new_data (List[Mapping[str, Any]]): [description]
@@ -69,14 +69,14 @@ class BaseDataCache:
 
     def flush(self) -> None:
         """
-        Empties the cache.
+        Empties the buffer.
         """
         self.current_batch_no += 1
         self.data = []
 
     def save(self) -> None:
         """
-        Saves data in the cache to the underlying data medium.
+        Saves data in the buffer to the underlying data medium.
         Needs to be implemented by subclasses!
 
         Raises:
@@ -99,8 +99,8 @@ class BaseDataCache:
 
     def __exit__(self, exc_type, exc_value, exc_traceback) -> Optional[bool]:
         """
-        Caches are context manangers to ensure correct cleanup
-            > e.g. when there's still some data left in the cache after iteration concluded.
+        Buffers are context manangers to ensure correct cleanup
+            > e.g. when there's still some data left in the buffer after iteration concluded.
 
         Args:
             *exc_type (exc): When the `exit` is invoked because of on out-of-context-scope error.
@@ -116,9 +116,9 @@ class BaseDataCache:
         self.save_and_flush()
 
 
-class DatabaseCache(BaseDataCache):
+class DatabaseBuffer(BaseDataBuffer):
     """
-    Subclass of a Datacache that interfaces any SQLAlchemy declarative base.
+    Subclass of a Databuffer that interfaces any SQLAlchemy declarative base.
 
     Args:
         TableInstance (bot_declarative_base): table_space that inherits from a declarative base.

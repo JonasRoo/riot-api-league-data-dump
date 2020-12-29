@@ -18,12 +18,12 @@ def _after_db_tests():
 
 
 @with_setup(setup=_setup_in_memory_db, teardown=_after_db_tests)
-def test_database_cache():
+def test_database_buffer():
     """
-    Test the database cache by using a mock in-memory sqlite database.
+    Test the database buffers by using a mock in-memory sqlite database.
     Temporarily enters TEST-mode for the application, but always exits it after.
     """
-    from ..data_caches import DatabaseCache
+    from ..data_buffers import DatabaseBuffer
     from ..database_orm.tables.player import Player
     from .session.session_handler import session_scope
     from api_interface.league_entries import EntryFetcher, _TESTING_PURPOSES_EF_PARAMS
@@ -34,18 +34,18 @@ def test_database_cache():
     with session_scope() as session:
         session.query(Player).delete()
 
-    with DatabaseCache(TableInstance=Player, batch_size=16) as cache:
+    with DatabaseBuffer(TableInstance=Player, batch_size=16) as buffer:
         # slighty interference with another test here (`EntryFetcher` test), but should be fine
         ef = EntryFetcher(**_TESTING_PURPOSES_EF_PARAMS)
         for idx, entries in enumerate(ef):
-            cache.add(entries)
-    # check that the cache was saved and flushed in correct amount of batches
-    assert cache.current_batch_no == math.ceil(ef.max_entries / cache.batch_size)
-    assert cache.empty
+            buffer.add(entries)
+    # check that the buffer was saved and flushed in correct amount of batches
+    assert buffer.current_batch_no == math.ceil(ef.max_entries / buffer.batch_size)
+    assert buffer.empty
 
     with session_scope() as session:
         players = session.query(Player).distinct(Player.summoner_id).all()
-        # check whether DatabaseCache has correctly processed and added data to the database
-        # (specifically checks DatabaseCache.save() function)
+        # check whether DatabaseBuffer has correctly processed and added data to the database
+        # (specifically checks DatabaseBuffer.save() function)
         assert players
         assert len(players) == ef.max_entries
